@@ -3,12 +3,12 @@
 
 /* Base Animations */
 @keyframes marquee-left {
-  0% { transform: translateX(100%); }
-  100% { transform: translateX(-100%); }
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-40%); }
 }
 @keyframes marquee-right {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
+  0% { transform: translateX(-40%); }
+  100% { transform: translateX(0%); }
 }
 
 /* Base Classes */
@@ -48,4 +48,39 @@
 }
 .animate-glow {
   animation: glow 2s ease-in-out infinite;
+}
+
+
+@keyframes slideInSidebar {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutSidebar {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+.slide-in {
+  animation: slideInSidebar 0.3s ease-out forwards;
+}
+
+.slide-out {
+  animation: slideOutSidebar 0.3s ease-in forwards;
+}
+
+.navbar{
+  position:Fixed;
 }
