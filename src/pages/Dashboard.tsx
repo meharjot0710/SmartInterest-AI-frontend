@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import NavBar from "../components/NavBar";
 
 interface User {
   name: string;
@@ -44,7 +45,7 @@ const Dashboard: React.FC = () => {
 
   return (
     <div className="min-h-screen mt-20 bg-[rgba(0, 0, 0, 0.5)] p-4 sm:p-6 lg:p-10 mx-4 sm:mx-10 lg:mx-20">
-
+      <NavBar/>
       {/* Profile Section */}
       <div className="bg-[rgba(0,0,0,0.1)] border border-[rgba(255,255,255,0.2)] hover:border-[rgba(255,255,255,0.5)] text-white rounded-xl p-6 shadow-lg flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6 mb-6">
         <img
