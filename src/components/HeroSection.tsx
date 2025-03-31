@@ -2,7 +2,7 @@ import React from "react";
 
 const HeroSection: React.FC = () => {
   return (
-    <section className="relative px-4 py-10 text-center text-white overflow-hidden">
+    <section className="relative top-20 px-4 py-10 text-center text-white overflow-hidden">
       {/* Glowing Left Circuit */}
       <img
         src="https://cdn.builder.io/api/v1/image/assets/TEMP/f72ab31381c33f4b9a20b6e711cbb5023ef436a2"
