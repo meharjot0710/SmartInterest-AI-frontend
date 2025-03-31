@@ -1,5 +1,4 @@
-import SignUpLogIn from '../components/SignUpLogIn'
-
+import SignUpLogIn from '../components/SignUpLogIn';
 export default function Login() {
   return (
     <div>

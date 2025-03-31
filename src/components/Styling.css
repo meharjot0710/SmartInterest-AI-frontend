@@ -25,16 +25,16 @@
 
 /* Speed Variants */
 .marquee-speed-1 {
-  animation-duration: 10s;
+  animation-duration: 5s;
 }
 .marquee-speed-2 {
-  animation-duration: 15s;
+  animation-duration: 5s;
 }
 .marquee-speed-3 {
-  animation-duration: 20s;
+  animation-duration: 5s;
 }
 .marquee-speed-4 {
-  animation-duration: 25s;
+  animation-duration: 5s;
 }
 
 /* Glow Animation */
@@ -79,8 +79,4 @@
 
 .slide-out {
   animation: slideOutSidebar 0.3s ease-in forwards;
-}
-
-.navbar{
-  position:Fixed;
 }

@@ -24,7 +24,7 @@ const NavBar: React.FC = () => {
       {/* Nav Header */}
       <header className="fixed top-0 left-0 right-0 z-40 flex justify-between items-center px-6 py-1 bg-black/10 backdrop-blur-md shadow-md max-sm:flex-col max-sm:gap-5">
         <div className="flex items-center justify-between w-full max-sm:flex-row">
-          <div className="flex h-10 mt-2 items-center gap-2 bg-black bg-opacity-50 border border-fuchsia-300 rounded-full px-3 py-1 backdrop-blur-md">
+          <div className="flex h-10 m-2 items-center gap-2 bg-black bg-opacity-50 border border-fuchsia-300 rounded-full px-3 py-1 backdrop-blur-md">
             <img
               src="https://cdn.builder.io/api/v1/image/assets/TEMP/a4ec8492fc45875ab579d95838b405435e3a070e"
               alt="SmartInterest AI Logo"
