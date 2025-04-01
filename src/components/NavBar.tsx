@@ -22,7 +22,7 @@ const NavBar: React.FC = () => {
   return (
     <div>
       {/* Nav Header */}
-      <header className="fixed top-0 left-0 right-0 z-40 flex justify-between items-center px-6 py-1 bg-black/10 backdrop-blur-md shadow-md max-sm:flex-col max-sm:gap-5">
+      <header className="fixed top-0 left-0 right-0 z-40 flex justify-between items-center px-6 py-1 bg-black/10 backdrop-blur-md border border-y-black/40 shadow-md max-sm:flex-col max-sm:gap-5">
         <div className="flex items-center justify-between w-full max-sm:flex-row">
           <a href="/">
           <div className="flex h-10 m-2 items-center gap-2 bg-black bg-opacity-50 border border-fuchsia-300 rounded-full px-3 py-1 backdrop-blur-md">
@@ -48,12 +48,12 @@ const NavBar: React.FC = () => {
 
         <nav className="hidden sm:flex gap-4">
           <a href="/login">
-          <button className="whitespace-nowrap px-3 py-1.5 text-base font-medium text-white border border-white rounded-[1vw] bg-transparent hover:bg-white hover:text-black transition-all duration-200">
+          <button className="whitespace-nowrap mr-3 px-3 py-1.5 text-base font-medium text-white border-b border-white rounded-[1vw] bg-transparent hover:bg-white hover:text-black transition-all duration-200">
             Log In
           </button>
           </a>
           <a href="/signup">
-          <button className="whitespace-nowrap px-3 py-1.5 text-base font-medium text-black bg-pink-300 rounded-[1vw] hover:bg-pink-400 transition-all duration-200">
+          <button className="whitespace-nowrap px-3 py-1.5 text-base border-b border-pink-400 font-medium text-white rounded-[1vw] hover:bg-pink-400 transition-all duration-200">
             Sign Up
           </button>
           </a>

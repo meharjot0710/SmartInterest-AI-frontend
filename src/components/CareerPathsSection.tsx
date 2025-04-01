@@ -1,4 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
+import { motion } from "framer-motion";
 import "./Styling.css";
 
 const jobRolesLines = [
@@ -15,26 +18,45 @@ const jobRolesLines = [
 ];
 
 const CareerPathsSection: React.FC = () => {
+  useEffect(() => {
+    AOS.init({ once: true, duration: 800 });
+  }, []);
+
   return (
-    <section className="relative px-0 py-0 text-center bg-transparent overflow-hidden min-h-[600px]">
-      {/* Background Animated Job Roles */}
-      <div className="absolute inset-0 flex flex-col gap-2 justify-center z-0">
+    <section
+      className="relative text-center overflow-hidden min-h-[600px] flex items-center justify-center"
+      style={{
+        maskImage:
+          "linear-gradient(to bottom, transparent 20%, black 40%, black 60%, transparent 80%)",
+        WebkitMaskImage:
+          "linear-gradient(to bottom, transparent 20%, black 40%, black 60%, transparent 100%)",
+      }}
+    >
+      {/* Animated Roles */}
+      <div className="absolute inset-0 flex flex-col gap-2 opacity-50 justify-center z-0">
         {jobRolesLines.map((line, index) => (
           <div
             key={index}
             className={`w-full whitespace-nowrap text-white text-lg md:text-xl opacity-20 font-light
               ${index % 2 === 0 ? "animate-marquee-left" : "animate-marquee-right"}
               marquee-speed-${(index % 4) + 1}`}
+            data-aos="fade-up"
+            data-aos-delay={index * 100}
           >
             {line} | {line}
           </div>
         ))}
       </div>
 
-      {/* Center Highlighted Text */}
-      <div className="whitespace-nowrap absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 px-6 py-3 text-base sm:text-xl md:text-2xl font-semibold text-white border border-white backdrop-blur-sm bg-[rgba(0,0,0,0.5)] rounded-full shadow-[0_0_25px_rgba(255,255,255,0.4)] animate-glow">
+      {/* Center Highlighted Text with Framer Motion */}
+      <motion.div
+        initial={{ scale: 0.95, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 1, delay: 0.4, ease: "easeOut" }}
+        className="z-10 px-6 py-3 text-base sm:text-xl md:text-2xl font-semibold text-white border border-white backdrop-blur-lg bg-[rgba(0,0,0,0.8)] rounded-full shadow-[0_0_25px_rgba(255,255,255,0.4)] animate-glow"
+      >
         "Confused About Your CS Career Path?"
-      </div>
+      </motion.div>
     </section>
   );
 };
