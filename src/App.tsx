@@ -65,6 +65,7 @@ const SmartInterestAI: React.FC = () => {
         </BrowserRouter>
       </QueryClientProvider>
       {/* <NavbarIfAlreadyLogin/> */}
+      {/* <Dashboard/> */}
     </main>
   );
 };
