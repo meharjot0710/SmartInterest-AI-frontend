@@ -1,19 +1,32 @@
 import React, { useState } from "react";
 import NavBar from "../components/NavBar";
+import { useEffect } from "react";
 
 interface User {
   name: string;
   email: string;
   profilePhoto: string;
-  interestArea?: string;
-  marks: {
-    [subject: string]: number[];
+  scores: {};
+  marks: Record<string, number[]>;
+  predicted_interest: string;
+  roadmap: {
+    description: string;
+    levels: {
+      Beginner: string[];
+      Intermediate: string[];
+      Advanced: string[];
+    };
   };
 }
+interface DashboardProps {
+  user: { uid: string };
+}
 
-const Dashboard: React.FC = () => {
+
+const Dashboard: React.FC<DashboardProps> = (us) => {
+  const [userData, setUserData] = useState<User | null>(null);
   const [user, setUser] = useState<User>({
-    name: "Yuvraj Mishra",
+    name: "{userData.name}",
     email: "yuvraj17mishra11@gmail.com",
     profilePhoto: "https://i.pravatar.cc/150?img=64", // Replace with user image
     interestArea: "", // Empty means not taken
@@ -26,6 +39,21 @@ const Dashboard: React.FC = () => {
       "Cloud Computing": [77, 83, 79],
     },
   });
+  
+  useEffect(() => {
+    fetch(`http://localhost:5000/get_user_data?uid=${user.uid}`)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        setUserData(data);
+        console.log(userData.scores)
+          setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Error fetching user data:", err);
+        setLoading(false);
+      });
+  }, [user]);
 
   const handleFindInterest = () => {
     // Normally, you would navigate to the questionnaire

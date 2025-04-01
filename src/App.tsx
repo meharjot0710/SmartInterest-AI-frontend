@@ -25,7 +25,6 @@ const SmartInterestAI: React.FC = () => {
     return () => unsubscribe();
   }, []);
 
-  if (loading) return <p>Loading...</p>;
   return (
     <main className="min-h-screen bg-gradient-to-tr from-black to-[#1a0e2b] overflow-x-hidden">
     <QueryClientProvider client={queryClient}>
