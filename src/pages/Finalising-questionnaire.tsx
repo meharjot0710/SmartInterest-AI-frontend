@@ -13,7 +13,7 @@ const domainMapping = {
   "Game Development": 7
 };
 
-const difficultyLevels = ["Beginner", "Intermediate", "Expert"];
+const difficultyLevels = ["Beginner", "Intermediate", "Advanced"];
 
 interface User {
   name: string;
@@ -35,12 +35,12 @@ const FinalizingQuestionnaire: React.FC<PredictionProp> = ({us}) => {
   const scores = location.state?.scores || {};
 
   const [formData, setFormData] = useState({
-    "Operating System": scores["Operating System"]*10,
-    "DSA": scores["DSA"]*10,
-    "Frontend": scores["Frontend"]*10,
-    "Backend": scores["Backend"]*10,
-    "Machine Learning": scores["Machine Learning"]*10,
-    "Data Analytics": scores["Data Analytics"]*10,
+    "Operating System": scores["Operating System"],
+    "DSA": scores["DSA"],
+    "Frontend": scores["Frontend"],
+    "Backend": scores["Backend"],
+    "Machine Learning": scores["Machine Learning"],
+    "Data Analytics": scores["Data Analytics"],
     "Project 1": "",
     "Level1": "",
     "Project 2": "",
@@ -101,16 +101,16 @@ const FinalizingQuestionnaire: React.FC<PredictionProp> = ({us}) => {
     try {
       const response = await axios.post("http://127.0.0.1:5000/predict", transformedData);
       setPrediction(response.data);
+      console.log(response.data);
       fetch("http://localhost:5000/update_user_data", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           uid: user.uid,
           email: user.email,
-          scores: scores,
-          predicted_interest: response.data, // Use response.data directly
+          predicted_interest: response.data.predicted_interest,
           formdata: formData,
-          roadmap: response.data.roadmap, // Use response.data directly
+          roadmap: response.data.roadmap,
         }),
       });
     
@@ -137,12 +137,6 @@ const FinalizingQuestionnaire: React.FC<PredictionProp> = ({us}) => {
       .catch((error) => console.error("Error fetching roadmaps:", error));
   }, [us.uid]);
 
-  // const handleLevelChange = (index: number, level: string) => {
-  //   const updated = [...selectedLevels];
-  //   updated[index] = level;
-  //   setSelectedLevels(updated);
-  // };
-  
   return (
     <>
       <NavbarIfAlreadyLogin name={user.name} profilePhoto={user.profilePhoto} />
@@ -155,7 +149,7 @@ const FinalizingQuestionnaire: React.FC<PredictionProp> = ({us}) => {
         <ul className="space-y-1 mb-3">
           {["Operating System", "DSA", "Frontend", "Backend", "Machine Learning", "Data Analytics"].map((subject) => (
             <li key={subject} className="text-sm">
-              <span className="font-medium">{subject.toUpperCase()}:</span> {formData[subject]}/100
+              <span className="font-medium">{subject.toUpperCase()}:</span> {formData[subject]*10}/100
             </li>
           ))}
         </ul>
