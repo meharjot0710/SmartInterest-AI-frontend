@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 
-const NavbarIfAlreadyLogin: React.FC = () => {
+interface NavbarProp {
+  name: string;
+  profilePhoto: string;
+}
+
+const NavbarIfAlreadyLogin: React.FC<NavbarProp> = ({name,profilePhoto}) => {
   const [showDrawer, setShowDrawer] = useState(false);
   const [visible, setVisible] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
@@ -24,10 +29,10 @@ const NavbarIfAlreadyLogin: React.FC = () => {
       {/* Nav Header */}
       <header className="fixed top-0 left-0 right-0 z-40 flex justify-between items-center px-6 py-1 bg-gradient-to-r from-purple-900 via-black to-black backdrop-blur-md border border-y-black/40 shadow-md max-sm:flex-col max-sm:gap-5">
         <div className="flex items-center justify-between w-full max-sm:flex-row">
-          <a href="/">
+          <a href="/dashboard">
             <div className="flex h-10 m-2 items-center gap-2 bg-black bg-opacity-50 border border-fuchsia-300 rounded-full px-3 py-1 backdrop-blur-md">
               <img
-                src="https://cdn.builder.io/api/v1/image/assets/TEMP/a4ec8492fc45875ab579d95838b405435e3a070e"
+                src={"https://cdn.builder.io/api/v1/image/assets/TEMP/a4ec8492fc45875ab579d95838b405435e3a070e"}
                 alt="SmartInterest AI Logo"
                 className="h-10 w-10 rounded-full object-cover"
               />
@@ -49,21 +54,31 @@ const NavbarIfAlreadyLogin: React.FC = () => {
 
         <nav className="hidden sm:flex gap-4 items-center">
           <span className="text-white whitespace-nowrap text-sm hidden md:inline">
-            Hi, Yuvraj
+            Hi, {name}
           </span>{" "}
           {/*Name of The User */}
           <div className="h-10 w-10 rounded-full overflow-hidden border-2 border-white shrink-0">
             <img
-              src="https://api.dicebear.com/7.x/thumbs/svg?seed=Yuvraj"
+              src={profilePhoto}
               alt="User Avatar"
               className="w-full h-full object-cover"
               loading="lazy"
             />{" "}
             {/*change "Vishal" to Name of The User */}
           </div>
-        <a href="/Dashboard" className="hidden sm:flex">
+          <a href="/dashboard" className="hidden sm:flex">
           <button className="whitespace-nowrap mr-3 px-3 py-1.5 text-base font-medium text-white border-b border-white rounded-[1vw] bg-transparent hover:bg-white hover:text-black transition-all duration-200">
             Dashboard
+          </button>
+        </a>
+        <a href="/tests" className="hidden sm:flex">
+          <button className="whitespace-nowrap mr-3 px-3 py-1.5 text-base font-medium text-white border-b border-white rounded-[1vw] bg-transparent hover:bg-white hover:text-black transition-all duration-200">
+            Predict
+          </button>
+        </a>
+        <a href="/" className="hidden sm:flex">
+          <button className="whitespace-nowrap mr-3 px-3 py-1.5 text-base font-medium text-white border-b border-white rounded-[1vw] bg-transparent hover:bg-white hover:text-black transition-all duration-200">
+            Logout
           </button>
         </a>
         </nav>
@@ -86,7 +101,7 @@ const NavbarIfAlreadyLogin: React.FC = () => {
           >
             <div className="flex justify-between items-start mb-6">
               <div>
-                <h2 className="text-xl font-semibold">Welcome Back, Vishal</h2>
+                <h2 className="text-xl font-semibold">Hi, {name}</h2>
                 <p className="text-sm text-gray-100 mt-1">
                   Explore your dashboard & profile.
                 </p>
@@ -105,9 +120,16 @@ const NavbarIfAlreadyLogin: React.FC = () => {
                   Dashboard
                 </button>
               </a>
-              <button className="px-4 py-2 text-base font-medium text-white border border-white rounded-lg hover:bg-white hover:text-black transition duration-200">
-                Logout
-              </button>
+              <a href="/tests">
+                <button className="whitespace-nowrap mr-3 px-3 py-1.5 text-base font-medium text-white border-b border-white rounded-[1vw] bg-transparent hover:bg-white hover:text-black transition-all duration-200">
+                  Predict
+                </button>
+              </a>
+              <a href="/">
+                <button className="whitespace-nowrap mr-3 px-3 py-1.5 text-base font-medium text-white border-b border-white rounded-[1vw] bg-transparent hover:bg-white hover:text-black transition-all duration-200">
+                  Logout
+                </button>
+              </a>
             </div>
           </div>
         </div>
