@@ -1,70 +1,151 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import NavbarIfAlreadyLogin from "../components/NavbarIfAlreadyLogin";
+import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
 
-const topics = [
-  "Artificial Intelligence",
-  "Web Development",
-  "Cybersecurity",
-  "Machine Learning",
-  "Data Science",
-  "Cloud Computing",
-];
-
-const questionnaireMarks = {
-  q1: 10,
-  q2: 8,
-  q3: 9,
-  q4: 7,
-  q5: 10,
-  q6: 9,
-  q7: 8,
-  q8: 10,
-  q9: 7,
-  q10: 9,
+const domainMapping = {
+  "AI": 1,
+  "Web Development": 2,
+  "Machine Learning": 3,
+  "Cybersecurity": 4,
+  "Data Science": 5,
+  "Robotics": 6,
+  "Game Development": 7
 };
 
 const difficultyLevels = ["Beginner", "Intermediate", "Expert"];
 
-const FinalizingQuestionnaire: React.FC = () => {
-  const [selectedTopics, setSelectedTopics] = useState<string[]>(["", "", ""]);
+interface User {
+  name: string;
+  profilePhoto: string;
+}
+
+interface PredictionProp {
+  user: { uid: string };
+}
+const FinalizingQuestionnaire: React.FC<PredictionProp> = ({us}) => {
+    const [user, setUser] = useState<User>({
+      name: "us.name",
+      profilePhoto: "https://i.pravatar.cc/150?img=64",
+    });
+    
   const [selectedLevels, setSelectedLevels] = useState<string[]>(["", "", ""]);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const scores = location.state?.scores || {};
 
-  const handleTopicChange = (index: number, value: string) => {
-    const updated = [...selectedTopics];
-    updated[index] = value;
-    setSelectedTopics(updated);
+  const [formData, setFormData] = useState({
+    "Operating System": scores["Operating System"]*10,
+    "DSA": scores["DSA"]*10,
+    "Frontend": scores["Frontend"]*10,
+    "Backend": scores["Backend"]*10,
+    "Machine Learning": scores["Machine Learning"]*10,
+    "Data Analytics": scores["Data Analytics"]*10,
+    "Project 1": "",
+    "Level1": "",
+    "Project 2": "",
+    "Level2": "",
+    "Project 3": "",
+    "Level3": "",
+    "Project 4": "",
+    "Level4": "",
+  });
+
+  const [prediction, setPrediction] = useState(null);
+  const [domains, setDomains] = useState([]);
+
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
 
-  const handleLevelChange = (index: number, level: string) => {
-    const updated = [...selectedLevels];
-    updated[index] = level;
-    setSelectedLevels(updated);
+  const handleLevelChange = (index, level) => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [`Level${index}`]: level,
+    }));
   };
+  
+  const levelOrder = ["Beginner", "Intermediate", "Advanced"];
 
-  const handleSubmit = () => {
-    const hasEmptyFields =
-      selectedTopics.includes("") || selectedLevels.includes("");
+  const storeUserInDB = async (user) => {
+    await fetch("http://localhost:5000/update_user_data", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        uid: user.uid,
+        email: user.email,
+        scores:scores,
+        predicted_interest:prediction,
+        formdata:formData,
+        roadmap:prediction.roadmap
+      }),
+    });
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log(formData);
+    const transformedData = {
+      user_id: location.state?.uid,
+      ...formData,
+      "Project 1": domainMapping[formData["Project 1"]] || 0,
+      "Project 2": domainMapping[formData["Project 2"]] || 0,
+      "Project 3": domainMapping[formData["Project 3"]] || 0,
+      "Project 4": domainMapping[formData["Project 4"]] || 0, 
+    };
 
-    const hasDuplicates = new Set(selectedTopics).size !== selectedTopics.length;
-
-    if (hasEmptyFields) {
-      alert("Please fill in all topics and difficulty levels.");
-      return;
+    try {
+      const response = await axios.post("http://127.0.0.1:5000/predict", transformedData);
+      setPrediction(response.data);
+      fetch("http://localhost:5000/update_user_data", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          uid: user.uid,
+          email: user.email,
+          scores: scores,
+          predicted_interest: response.data, // Use response.data directly
+          formdata: formData,
+          roadmap: response.data.roadmap, // Use response.data directly
+        }),
+      });
+    
+    } catch (error) {
+      console.error("Error:", error);
     }
+  }
 
-    if (hasDuplicates) {
-      alert("Duplicate topics selected. Please select unique topics.");
-      return;
-    }
+  useEffect(() => {
+    fetch(`http://localhost:5000/get_user_data?uid=${us.uid}`)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        setUser(data);
+      })
+      .catch((err) => {
+        console.error("Error fetching user data:", err);
+      });
+      console.log(scores)
+    axios.get("http://127.0.0.1:5000/roadmaps")
+      .then((response) => {
+        setDomains(Object.keys(response.data));
+      })
+      .catch((error) => console.error("Error fetching roadmaps:", error));
+  }, [us.uid]);
 
-    console.log("Selected Topics:", selectedTopics);
-    console.log("Selected Difficulty Levels:", selectedLevels);
-    console.log("Marks:", questionnaireMarks);
-    alert("Submitted! Data ready to be sent to backend.");
-  };
-
-  const totalScore = Object.values(questionnaireMarks).reduce((a, b) => a + b, 0);
-
+  // const handleLevelChange = (index: number, level: string) => {
+  //   const updated = [...selectedLevels];
+  //   updated[index] = level;
+  //   setSelectedLevels(updated);
+  // };
+  
   return (
+    <>
+      <NavbarIfAlreadyLogin name={user.name} profilePhoto={user.profilePhoto} />
     <div className="max-w-3xl mx-auto mt-20 mb-10 p-6 min-h-screen bg-[rgba(0,0,0,0.5)] rounded-xl backdrop-blur-md border border-white/20 text-white">
       <h1 className="text-3xl font-bold text-center mb-8">🎯 Finalize Your Questionnaire</h1>
 
@@ -72,32 +153,32 @@ const FinalizingQuestionnaire: React.FC = () => {
       <div className="bg-[rgba(255,255,255,0.1)] rounded-lg p-4 mb-6 shadow-md border border-white/10">
         <h2 className="text-xl font-semibold mb-4">📋 Your Marks</h2>
         <ul className="space-y-1 mb-3">
-          {Object.entries(questionnaireMarks).map(([question, mark]) => (
-            <li key={question} className="text-sm">
-              <span className="font-medium">{question.toUpperCase()}:</span> {mark}/10
+          {["Operating System", "DSA", "Frontend", "Backend", "Machine Learning", "Data Analytics"].map((subject) => (
+            <li key={subject} className="text-sm">
+              <span className="font-medium">{subject.toUpperCase()}:</span> {formData[subject]}/100
             </li>
           ))}
         </ul>
-        <div className="text-lg font-bold mt-3">Total: {totalScore}/100</div>
       </div>
 
       {/* Topics + Modern Difficulty Meter */}
       <div className="bg-[rgba(255,255,255,0.1)] rounded-lg p-4 mb-6 shadow-md border border-white/10">
         <h2 className="text-xl font-semibold mb-4">🧠 Select Your Project Topics & Difficulty</h2>
         <div className="space-y-6">
-          {[0, 1, 2].map((i) => (
-            <div key={i} className="space-y-3">
+          {["Project 1", "Project 2", "Project 3", "Project 4"].map((project, index) => (
+            <div key={index} className="space-y-3">
               {/* Topic Dropdown */}
               <div className="relative">
                 <select
-                  value={selectedTopics[i]}
-                  onChange={(e) => handleTopicChange(i, e.target.value)}
+                  name={project}
+                  value={formData[project]}
+                  onChange={handleChange}
                   className="w-full p-2 pr-10 bg-black bg-opacity-30 border border-white/20 rounded-md text-white appearance-none"
                 >
-                  <option value="">Project's Topic {i + 1}</option>
-                  {topics.map((topic) => (
-                    <option key={topic} value={topic}>
-                      {topic}
+                  <option value="">Project's Topic {index + 1}</option>
+                  {domains.map((domain, idx) => (
+                    <option key={idx} value={domain}>
+                      {domain}  
                     </option>
                   ))}
                 </select>
@@ -111,9 +192,9 @@ const FinalizingQuestionnaire: React.FC = () => {
                 {difficultyLevels.map((level) => (
                   <button
                     key={level}
-                    onClick={() => handleLevelChange(i, level)}
+                    onClick={()=>handleLevelChange(index+1, level)}
                     className={`px-4 py-1.5 rounded-full border text-sm font-medium transition ${
-                      selectedLevels[i] === level
+                      formData[`Level${index+1}`] === level
                         ? "bg-pink-400 border-fuchsia-400 text-white"
                         : "bg-transparent border-white text-white hover:bg-white hover:text-black"
                     }`}
@@ -124,12 +205,12 @@ const FinalizingQuestionnaire: React.FC = () => {
               </div>
 
               {/* Preview */}
-              {selectedTopics[i] && selectedLevels[i] && (
+              {/* {selectedTopics[i] && selectedLevels[i] && (
                 <div className="text-sm text-white/80">
                   ✅ You chose <span className="font-semibold">{selectedTopics[i]}</span> (
                   <span className="italic">{selectedLevels[i]}</span>)
                 </div>
-              )}
+              )} */}
             </div>
           ))}
         </div>
@@ -145,6 +226,7 @@ const FinalizingQuestionnaire: React.FC = () => {
         </button>
       </div>
     </div>
+    </>
   );
 };
 

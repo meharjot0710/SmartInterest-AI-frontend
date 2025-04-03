@@ -5,6 +5,7 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { auth, googleProvider } from "../pages/firebaseConfig";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 const InputField = ({
   label,
@@ -38,6 +39,7 @@ const SignUpLogIn: React.FC = () => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [fullName, setFullName] = useState("");
   const navigate = useNavigate();
 
   const loginWithEmail = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -66,7 +68,7 @@ const SignUpLogIn: React.FC = () => {
       body: JSON.stringify({
         uid: user.uid,
         email: user.email,
-        name: user.displayName || "Anonymous",
+        name: user.name || "Anonymous",
       }),
     });
   };
@@ -82,13 +84,23 @@ const SignUpLogIn: React.FC = () => {
       alert("Google Sign-In Failed.");
     }
   };
-  const handleEmailChange = (event) => {
-    setEmail(event.target.value);
+  const register = async () => {
+    if (!fullName || !email || !password) {
+      alert("Please fill out all fields.");
+      return;
+    }
+
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      await storeUserInDB({ uid: auth.currentUser.uid, email, name: fullName });
+      alert("Account Created!");
+      setIsSignUp(false);
+    } catch (error) {
+      console.error("Registration Error:", error);
+      alert(error.message);
+    }
   };
 
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
-  };
   return (
     <div className="flex flex-col w-full h-screen items-center justify-center mb-10 text-white px-4 overflow-hidden relative">
       {/* Branding (Mobile) */}
@@ -120,13 +132,19 @@ const SignUpLogIn: React.FC = () => {
           </a>
           {/* SIGN UP FORM */}
           {isSignUp && (
-            <form onSubmit={loginWithEmail} className="flex flex-col gap-4">
+            <form className="flex flex-col gap-4" onSubmit={(e) => e.preventDefault()}>
               <h1 className="p-2 bg-opacity-40 items-center justify-center text-3xl font-bold font-mono justify-inline">
                 SignUp
               </h1>
-              <InputField label="Full Name" name="fullName" />
-              <InputField label="Email" type="email" name="email" />
-              <InputField label="Password" type="password" name="password" />
+              <InputField label="Full Name" name="fullName"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)} />
+              <InputField label="Email" type="email" name="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)} />
+              <InputField label="Password" type="password" name="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)} />
 
               <div className="flex items-center gap-2 text-xs">
                 <input type="checkbox" name="subscribe" />
@@ -134,7 +152,7 @@ const SignUpLogIn: React.FC = () => {
               </div>
 
               <button
-                type="submit"
+                onClick={register}
                 className="bg-white text-black px-6 py-2 rounded-full mt-2 hover:bg-zinc-200 transition-all"
               >
                 Sign Up
@@ -154,7 +172,7 @@ const SignUpLogIn: React.FC = () => {
 
           {/* LOGIN FORM */}
           {!isSignUp && (
-            <form onSubmit={loginWithEmail} className="flex flex-col gap-4 ">
+            <form className="flex flex-col gap-4 "  onSubmit={(e) => e.preventDefault()}>
               <h1 className="p-2 bg-opacity-40 items-center justify-center text-3xl font-bold font-mono justify-inline">
                 Login
               </h1>
@@ -179,10 +197,16 @@ const SignUpLogIn: React.FC = () => {
               </div>
 
               <button
-                type="submit"
+                onClick={loginWithEmail}
                 className="bg-white text-black px-6 py-2 rounded-full mt-2 hover:bg-zinc-200 transition-all"
               >
                 Log In
+              </button>
+              <button
+                onClick={loginWithGoogle}
+                className="bg-white text-black px-6 py-2 rounded-full mt-2 hover:bg-zinc-200 transition-all"
+              >
+                Log In With Google
               </button>
 
               <p className="text-xs mt-4 text-right">

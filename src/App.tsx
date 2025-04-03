@@ -9,7 +9,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import FinalizingQuestionnaire from "./pages/Finalising-questionnaire.tsx";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import NavbarIfAlreadyLogin from "./components/NavbarIfAlreadyLogin.tsx";
 
 const queryClient = new QueryClient();
 
@@ -18,18 +17,23 @@ const SmartInterestAI: React.FC = () => {
     uid: string;
     email: string | null;
   } | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true); // Add loading state
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
       setUser(
         currentUser ? { uid: currentUser.uid, email: currentUser.email } : null
       );
-      setLoading(false);
+      setLoading(false); // Set loading to false once Firebase has initialized
     });
 
     return () => unsubscribe();
   }, []);
+
+  if (loading) {
+    return <div className="relative min-h-screen bg-gradient-to-tr from-black to-[#1a0e2b] overflow-x-hidden"></div>;
+  }
+
 
   return (
     <main>
@@ -49,16 +53,16 @@ const SmartInterestAI: React.FC = () => {
             <Route path="/signup" element={<SignUpLogIn />} />
             <Route
               path="/dashboard"
-              element={user ? <Dashboard /> : <Navigate to="/login" />}
+              element={user ? <Dashboard us={user} /> : <Navigate to="/login" />}
             />
             <Route
               path="/tests"
-              element={user ? <Questionnaire /> : <Navigate to="/login" />}
+              element={user ? <Questionnaire us={user} /> : <Navigate to="/login" />}
             />
             <Route
               path="/predict"
               element={
-                user ? <FinalizingQuestionnaire /> : <Navigate to="/login" />
+                user ? <FinalizingQuestionnaire us={user} /> : <Navigate to="/login" />
               }
             />
           </Routes>

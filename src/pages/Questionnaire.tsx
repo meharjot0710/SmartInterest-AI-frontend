@@ -1,104 +1,109 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import NavbarIfAlreadyLogin from "../components/NavbarIfAlreadyLogin";
 
-interface Question {
-  id: number;
-  question: string;
-  options: string[];
+interface DashboardProps {
+  us: { uid: string; name: string; email: string };
 }
 
-const questions: Question[] = [
-  {
-    id: 1,
-    question: "Which one is a JavaScript library for building UIs?",
-    options: ["Angular", "Vue", "React", "Svelte"],
-  },
-  {
-    id: 2,
-    question: "Which language runs in a browser?",
-    options: ["Python", "C++", "Java", "JavaScript"],
-  },
-  {
-    id: 3,
-    question: "Which is a utility-first CSS framework?",
-    options: ["Bootstrap", "Tailwind CSS", "Bulma", "Foundation"],
-  },
-  {
-    id: 4,
-    question: "What is used to manage state in React?",
-    options: ["Redux", "Axios", "Lodash", "Webpack"],
-  },
-  {
-    id: 5,
-    question: "Which hook runs after component mounts?",
-    options: ["useState", "useEffect", "useMemo", "useRef"],
-  },
-  {
-    id: 6,
-    question: "Which is a NoSQL database?",
-    options: ["MySQL", "MongoDB", "Oracle", "PostgreSQL"],
-  },
-  {
-    id: 7,
-    question: "Which tool bundles JS files?",
-    options: ["Webpack", "Sass", "Nodemon", "Gulp"],
-  },
-  {
-    id: 8,
-    question: "Which keyword creates a constant in JavaScript?",
-    options: ["let", "const", "var", "static"],
-  },
-  {
-    id: 9,
-    question: "Which is used to make HTTP requests in React?",
-    options: ["Axios", "React Router", "Redux", "Next.js"],
-  },
-  {
-    id: 10,
-    question: "Which of the following is a React framework?",
-    options: ["Next.js", "NestJS", "Express", "VuePress"],
-  },
-];
+interface User {
+  name: string;
+  profilePhoto: string;
+}
+const Questionnaire: React.FC<DashboardProps> = ({us}) => {
+  const [user, setUser] = useState<User>({
+    name: "us.name",
+    profilePhoto: "https://i.pravatar.cc/150?img=64",
+  });
+  const subjects = ["Operating System", "DSA", "Frontend", "Backend", "Machine Learning", "Data Analytics"];
+  const [currentSubjectIndex, setCurrentSubjectIndex] = useState(0);
+  const [questions, setQuestions] = useState([]);
+  const [answers, setAnswers] = useState({});
+  const [scores, setScores] = useState({});
+  const navigate = useNavigate();
 
-const Questionnaire: React.FC = () => {
-  const [answers, setAnswers] = useState<{ [key: number]: string }>({});
-  const [submitted, setSubmitted] = useState(false);
+  useEffect(() => {
+    fetch(`http://localhost:5000/get_user_data?uid=${us.uid}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setUser(data);
+        fetchQuestions();
 
-  const handleChange = (questionId: number, option: string) => {
-    setAnswers((prev) => ({ ...prev, [questionId]: option }));
+      })
+      .catch((err) => {
+        console.error("Error fetching user data:", err);
+      });
+  }, [currentSubjectIndex]);
+
+  const fetchQuestions = async () => {
+    try {
+      const subject = subjects[currentSubjectIndex];
+      const res = await fetch(`http://127.0.0.1:5000/get_questions?subject=${subject}`);
+      if (!res.ok) throw new Error("Failed to fetch questions");
+      const data = await res.json();
+      setQuestions(data.questions);
+      setAnswers({});
+    } catch (error) {
+      console.error("Error fetching questions:", error);
+    }
+  };
+  
+
+  const handleAnswerChange = (qIndex, answer) => {
+    setAnswers((prev) => ({ ...prev, [qIndex]: answer }));
   };
 
-  const handleSubmit = () => {
-    setSubmitted(true);
-    console.log("User Answers:", answers);
-    alert("Thank you for submitting!");
+  const handleSubmit = async () => {
+    const subject = subjects[currentSubjectIndex];
+  
+    // Ensure the answers are in correct order
+    const orderedAnswers = questions.map((_, index) => answers[index] || null); 
+  
+    const res = await fetch("http://127.0.0.1:5000/submit_answers", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ subject, answers: orderedAnswers }), // Ensures correct order
+    });
+  
+    const data = await res.json();
+    
+    const updatedScores = { ...scores, [subject]: data.score };
+    setScores(updatedScores);
+  
+    if (currentSubjectIndex < subjects.length - 1) {
+      setCurrentSubjectIndex(currentSubjectIndex + 1);
+    } else {
+      navigate("/predict", { state: { scores: updatedScores } });
+    }
   };
-
+  
   return (
     <div className="max-w-3xl mx-auto p-6 bg-transparent rounded-[25px] min-h-screen">
+      <NavbarIfAlreadyLogin name={user.name} profilePhoto={user.profilePhoto} />
       <h1 className="text-4xl text-white font-bold text-center mb-10">
-        Questionnaire :~
+      {subjects[currentSubjectIndex]} Test
       </h1>
 
-      {questions.map((q) => (
+      {questions.map((q,index) => (
         <div
-        key={q.id}
+        key={index}
         className="bg-white rounded-lg shadow-md p-6 mb-6 transition-transform duration-200 hover:scale-[1.01] hover:drop-shadow-[0_0_20px_rgba(0,0,0,1)]"
         >      
           <p className="text-lg font-semibold mb-4">
-            {q.id}. {q.question}
+            {index+1}. {q.question}
           </p>
           <div className="flex flex-col gap-3">
-            {q.options.map((opt) => (
+            {q.options.map((opt,optindex) => (
               <label
                 key={opt}
                 className="flex items-center gap-3 cursor-pointer"
               >
                 <input
                   type="radio"
-                  name={`question-${q.id}`}
+                  name={`q${index}`}
                   value={opt}
-                  checked={answers[q.id] === opt}
-                  onChange={() => handleChange(q.id, opt)}
+                  checked={answers[index] === opt}
+                  onChange={() => handleAnswerChange(index, opt)}
                   className="w-4 h-4 accent-blue-600"
                 />
                 <span className="text-gray-800">{opt}</span>
@@ -108,17 +113,16 @@ const Questionnaire: React.FC = () => {
         </div>
       ))}
 
-      <button
-        className={`w-full py-3 text-lg font-medium rounded-lg transition-colors ${
-          submitted
-            ? "bg-gray-400 text-white cursor-not-allowed"
-            : "bg-blue-600 text-white hover:bg-blue-700"
-        }`}
-        onClick={handleSubmit}
-        disabled={submitted}
-      >
-        {submitted ? "Submitted" : "Submit"}
-      </button>
+      <div className="bg-white">
+        {currentSubjectIndex > 0 && (
+          <button onClick={() => setCurrentSubjectIndex(currentSubjectIndex - 1)}>Previous</button>
+        )}
+        {currentSubjectIndex < subjects.length - 1 ? (
+          <button onClick={handleSubmit}>Next</button>
+        ) : (
+          <button onClick={handleSubmit}>Finish Test</button>
+        )}
+      </div>
     </div>
   );
 };
