@@ -54,7 +54,7 @@ const SignUpLogIn: React.FC = () => {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       await storeUserInDB(userCredential.user);
       alert("Login Successful! Redirecting to dashboard...");
-      setTimeout(() => navigate("/#/dashboard"), 1500);
+      setTimeout(() => navigate("/SmartInterest-AI-frontend/#/dashboard"), 1500);
     } catch (error) {
       console.error("Email Login Error:", error);
       alert((error as Error).message); // TS-safe
@@ -127,7 +127,7 @@ const SignUpLogIn: React.FC = () => {
             isSignUp ? "sm:translate-x-full" : "sm:translate-x-0"
           } p-6 sm:p-10 flex flex-col justify-center`}
         >
-          <a href="/">
+          <a href="/SmartInterest-AI-frontend/#/">
             <button className="absolute top-4 right-4 text-sm bg-zinc-800 px-3 py-1 rounded-full hover:bg-zinc-700 transition">
               ✕
             </button>

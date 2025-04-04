@@ -29,7 +29,7 @@ const NavbarIfAlreadyLogin: React.FC<NavbarProp> = ({name,profilePhoto}) => {
       {/* Nav Header */}
       <header className="fixed top-0 left-0 right-0 z-40 flex justify-between items-center px-6 py-1 bg-gradient-to-r from-purple-900 via-black to-black backdrop-blur-md border border-y-black/40 shadow-md max-sm:flex-col max-sm:gap-5">
         <div className="flex items-center justify-between w-full max-sm:flex-row">
-          <a href="/dashboard">
+          <a href="/SmartInterest-AI-frontend/#/dashboard">
             <div className="flex h-10 m-2 items-center gap-2 bg-black bg-opacity-50 border border-fuchsia-300 rounded-full px-3 py-1 backdrop-blur-md">
               <img
                 src={"https://cdn.builder.io/api/v1/image/assets/TEMP/a4ec8492fc45875ab579d95838b405435e3a070e"}
@@ -66,17 +66,17 @@ const NavbarIfAlreadyLogin: React.FC<NavbarProp> = ({name,profilePhoto}) => {
             />{" "}
             {/*change "Vishal" to Name of The User */}
           </div>
-          <a href="/#/dashboard" className="hidden sm:flex">
+          <a href="/SmartInterest-AI-frontend/#/dashboard" className="hidden sm:flex">
           <button className="whitespace-nowrap mr-3 px-3 py-1.5 text-base font-medium text-white border-b border-white rounded-[1vw] bg-transparent hover:bg-white hover:text-black transition-all duration-200">
             Dashboard
           </button>
         </a>
-        <a href="/#/tests" className="hidden sm:flex">
+        <a href="/SmartInterest-AI-frontend/#/tests" className="hidden sm:flex">
           <button className="whitespace-nowrap mr-3 px-3 py-1.5 text-base font-medium text-white border-b border-white rounded-[1vw] bg-transparent hover:bg-white hover:text-black transition-all duration-200">
             Predict
           </button>
         </a>
-        <a href="/#/" className="hidden sm:flex">
+        <a href="/SmartInterest-AI-frontend/#/" className="hidden sm:flex">
           <button className="whitespace-nowrap mr-3 px-3 py-1.5 text-base font-medium text-white border-b border-white rounded-[1vw] bg-transparent hover:bg-white hover:text-black transition-all duration-200">
             Logout
           </button>
@@ -115,17 +115,17 @@ const NavbarIfAlreadyLogin: React.FC<NavbarProp> = ({name,profilePhoto}) => {
             </div>
 
             <div className="flex flex-col gap-4">
-              <a href="/#/dashboard">
+              <a href="/SmartInterest-AI-frontend/#/dashboard">
                 <button className="whitespace-nowrap mr-3 px-3 py-1.5 text-base font-medium text-white border-b border-white rounded-[1vw] bg-transparent hover:bg-white hover:text-black transition-all duration-200">
                   Dashboard
                 </button>
               </a>
-              <a href="/#/tests">
+              <a href="/SmartInterest-AI-frontend/#/tests">
                 <button className="whitespace-nowrap mr-3 px-3 py-1.5 text-base font-medium text-white border-b border-white rounded-[1vw] bg-transparent hover:bg-white hover:text-black transition-all duration-200">
                   Predict
                 </button>
               </a>
-              <a href="/#/">
+              <a href="/SmartInterest-AI-frontend/#/">
                 <button className="whitespace-nowrap mr-3 px-3 py-1.5 text-base font-medium text-white border-b border-white rounded-[1vw] bg-transparent hover:bg-white hover:text-black transition-all duration-200">
                   Logout
                 </button>
