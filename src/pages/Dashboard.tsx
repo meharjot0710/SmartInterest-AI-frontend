@@ -74,7 +74,7 @@ const Dashboard: React.FC<DashboardProps> = ({ us }) => {
   }, [us.uid]);
 
   const handleFindInterest = () => {
-    navigate("/tests")
+    navigate("/#/tests")
   };
 
   const calculateStats = () => {

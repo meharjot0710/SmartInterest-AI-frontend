@@ -66,17 +66,17 @@ const NavbarIfAlreadyLogin: React.FC<NavbarProp> = ({name,profilePhoto}) => {
             />{" "}
             {/*change "Vishal" to Name of The User */}
           </div>
-          <a href="/dashboard" className="hidden sm:flex">
+          <a href="/#/dashboard" className="hidden sm:flex">
           <button className="whitespace-nowrap mr-3 px-3 py-1.5 text-base font-medium text-white border-b border-white rounded-[1vw] bg-transparent hover:bg-white hover:text-black transition-all duration-200">
             Dashboard
           </button>
         </a>
-        <a href="/tests" className="hidden sm:flex">
+        <a href="/#/tests" className="hidden sm:flex">
           <button className="whitespace-nowrap mr-3 px-3 py-1.5 text-base font-medium text-white border-b border-white rounded-[1vw] bg-transparent hover:bg-white hover:text-black transition-all duration-200">
             Predict
           </button>
         </a>
-        <a href="/" className="hidden sm:flex">
+        <a href="/#/" className="hidden sm:flex">
           <button className="whitespace-nowrap mr-3 px-3 py-1.5 text-base font-medium text-white border-b border-white rounded-[1vw] bg-transparent hover:bg-white hover:text-black transition-all duration-200">
             Logout
           </button>
@@ -115,17 +115,17 @@ const NavbarIfAlreadyLogin: React.FC<NavbarProp> = ({name,profilePhoto}) => {
             </div>
 
             <div className="flex flex-col gap-4">
-              <a href="/SmartInterest-AI-frontend/dashboard">
+              <a href="/#/dashboard">
                 <button className="whitespace-nowrap mr-3 px-3 py-1.5 text-base font-medium text-white border-b border-white rounded-[1vw] bg-transparent hover:bg-white hover:text-black transition-all duration-200">
                   Dashboard
                 </button>
               </a>
-              <a href="/SmartInterest-AI-frontend/tests">
+              <a href="/#/tests">
                 <button className="whitespace-nowrap mr-3 px-3 py-1.5 text-base font-medium text-white border-b border-white rounded-[1vw] bg-transparent hover:bg-white hover:text-black transition-all duration-200">
                   Predict
                 </button>
               </a>
-              <a href="/SmartInterest-AI-frontend/">
+              <a href="/#/">
                 <button className="whitespace-nowrap mr-3 px-3 py-1.5 text-base font-medium text-white border-b border-white rounded-[1vw] bg-transparent hover:bg-white hover:text-black transition-all duration-200">
                   Logout
                 </button>
