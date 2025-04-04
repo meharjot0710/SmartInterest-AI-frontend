@@ -7,8 +7,9 @@ import {auth} from "./pages/firebaseConfig.ts";
 import Dashboard from "./pages/Dashboard.tsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import FinalizingQuestionnaire from "./pages/Finalising-questionnaire.tsx";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { HashRouter } from 'react-router-dom';
 // import Profile from "./pages/Profile.tsx";
 // import Prediction from "./pages/Prediction.tsx";
 
@@ -48,7 +49,7 @@ const SmartInterestAI: React.FC = () => {
       />
 
       <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
+        <HashRouter>
           <Routes>
             <Route path="/" element={<Landing />} />
             <Route path="/login" element={<SignUpLogIn />} />
@@ -68,7 +69,7 @@ const SmartInterestAI: React.FC = () => {
               }
             />
           </Routes>
-        </BrowserRouter>
+        </HashRouter>
       </QueryClientProvider>
       {/* <NavbarIfAlreadyLogin/> */}
       {/* <Dashboard/> */}
