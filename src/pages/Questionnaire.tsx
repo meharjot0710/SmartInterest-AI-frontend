@@ -30,7 +30,7 @@ const Questionnaire: React.FC<DashboardProps> = ({ us }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`http://localhost:5000/get_user_data?uid=${us.uid}`)
+    fetch(`https://smartinterest-ai-backend.onrender.com/get_user_data?uid=${us.uid}`)
       .then((res) => res.json())
       .then((data) => {
         setUser(data);
@@ -45,7 +45,7 @@ const Questionnaire: React.FC<DashboardProps> = ({ us }) => {
     try {
       const subject = subjects[currentSubjectIndex];
       const res = await fetch(
-        `http://127.0.0.1:5000/get_questions?subject=${subject}`
+        `https://smartinterest-ai-backend.onrender.com/get_questions?subject=${subject}`
       );
       if (!res.ok) throw new Error("Failed to fetch questions");
       const data = await res.json();
@@ -66,7 +66,7 @@ const Questionnaire: React.FC<DashboardProps> = ({ us }) => {
     // Ensure the answers are in correct order
     const orderedAnswers = questions.map((_, index) => answers[index] || null);
 
-    const res = await fetch("http://127.0.0.1:5000/submit_answers", {
+    const res = await fetch("https://smartinterest-ai-backend.onrender.com/submit_answers", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ subject, answers: orderedAnswers }), // Ensures correct order

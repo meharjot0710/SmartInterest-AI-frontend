@@ -73,7 +73,7 @@ const FinalizingQuestionnaire: React.FC<PredictionProp> = ({us}) => {
   const levelOrder = ["Beginner", "Intermediate", "Advanced"];
 
   const storeUserInDB = async (user) => {
-    await fetch("http://localhost:5000/update_user_data", {
+    await fetch("https://smartinterest-ai-backend.onrender.com/update_user_data", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -99,10 +99,10 @@ const FinalizingQuestionnaire: React.FC<PredictionProp> = ({us}) => {
     };
 
     try {
-      const response = await axios.post("http://127.0.0.1:5000/predict", transformedData);
+      const response = await axios.post("https://smartinterest-ai-backend.onrender.com/predict", transformedData);
       setPrediction(response.data);
       console.log(response.data);
-      fetch("http://localhost:5000/update_user_data", {
+      fetch("https://smartinterest-ai-backend.onrender.com/update_user_data", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -120,7 +120,7 @@ const FinalizingQuestionnaire: React.FC<PredictionProp> = ({us}) => {
   }
 
   useEffect(() => {
-    fetch(`http://localhost:5000/get_user_data?uid=${us.uid}`)
+    fetch(`https://smartinterest-ai-backend.onrender.com?uid=${us.uid}`)
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
@@ -130,7 +130,7 @@ const FinalizingQuestionnaire: React.FC<PredictionProp> = ({us}) => {
         console.error("Error fetching user data:", err);
       });
       console.log(scores)
-    axios.get("http://127.0.0.1:5000/roadmaps")
+    axios.get("https://smartinterest-ai-backend.onrender.com/roadmaps")
       .then((response) => {
         setDomains(Object.keys(response.data));
       })

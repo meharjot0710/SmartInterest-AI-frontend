@@ -62,7 +62,7 @@ const SignUpLogIn: React.FC = () => {
 };
 
   const storeUserInDB = async (user) => {
-    await fetch("http://localhost:5000/store_user", {
+    await fetch("https://smartinterest-ai-backend.onrender.com/store_user", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
