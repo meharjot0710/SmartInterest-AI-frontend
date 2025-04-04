@@ -47,12 +47,12 @@ const NavBar: React.FC = () => {
         </div>
 
         <nav className="hidden sm:flex gap-4">
-          <a href="/login">
+          <a href="/SmartInterest-AI-frontend/login">
           <button className="whitespace-nowrap mr-3 px-3 py-1.5 text-base font-medium text-white border-b border-white rounded-[1vw] bg-transparent hover:bg-white hover:text-black transition-all duration-200">
             Log In
           </button>
           </a>
-          <a href="/signup">
+          <a href="/SmartInterest-AI-frontend/signup">
           <button className="whitespace-nowrap px-3 py-1.5 text-base border-b border-pink-400 font-medium text-white rounded-[1vw] hover:bg-pink-400 transition-all duration-200">
             Sign Up
           </button>

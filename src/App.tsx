@@ -41,8 +41,8 @@ const SmartInterestAI: React.FC = () => {
   return (
     <main className="relative min-h-screen bg-gradient-to-tr from-black to-[#1a0e2b] overflow-x-hidden">
     {/* Background image */}
-      <img
-        src="./public/abstract-bg.png"
+    <img
+        src="/SmartInterest-AI-frontend/abstract-bg.png"
         alt="Abstract background"
         className="absolute inset-0 w-full h-full object-cover -z-10 pointer-events-none fixed"
       />
@@ -53,20 +53,9 @@ const SmartInterestAI: React.FC = () => {
             <Route path="/" element={<Landing />} />
             <Route path="/login" element={<SignUpLogIn />} />
             <Route path="/signup" element={<SignUpLogIn />} />
-            <Route
-              path="/SmartInterest-AI-frontend/dashboard"
-              element={user ? <Dashboard us={user} /> : <Navigate to="/login" />}
-            />
-            <Route
-              path="/SmartInterest-AI-frontend/tests"
-              element={user ? <Questionnaire us={user} /> : <Navigate to="/login" />}
-            />
-            <Route
-              path="/SmartInterest-AI-frontend/predict"
-              element={
-                user ? <FinalizingQuestionnaire us={user} /> : <Navigate to="/login" />
-              }
-            />
+            <Route path="/dashboard" element={user ? <Dashboard us={user} /> : <Navigate to="/login" />} />
+            <Route path="/tests" element={user ? <Questionnaire us={user} /> : <Navigate to="/login" />} />
+            <Route path="/predict" element={user ? <FinalizingQuestionnaire us={user} /> : <Navigate to="/login" />} />
           </Routes>
         </HashRouter>
       </QueryClientProvider>

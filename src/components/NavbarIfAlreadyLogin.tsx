@@ -115,17 +115,17 @@ const NavbarIfAlreadyLogin: React.FC<NavbarProp> = ({name,profilePhoto}) => {
             </div>
 
             <div className="flex flex-col gap-4">
-              <a href="/Dashboard">
+              <a href="/SmartInterest-AI-frontend/dashboard">
                 <button className="whitespace-nowrap mr-3 px-3 py-1.5 text-base font-medium text-white border-b border-white rounded-[1vw] bg-transparent hover:bg-white hover:text-black transition-all duration-200">
                   Dashboard
                 </button>
               </a>
-              <a href="/tests">
+              <a href="/SmartInterest-AI-frontend/tests">
                 <button className="whitespace-nowrap mr-3 px-3 py-1.5 text-base font-medium text-white border-b border-white rounded-[1vw] bg-transparent hover:bg-white hover:text-black transition-all duration-200">
                   Predict
                 </button>
               </a>
-              <a href="/">
+              <a href="/SmartInterest-AI-frontend/">
                 <button className="whitespace-nowrap mr-3 px-3 py-1.5 text-base font-medium text-white border-b border-white rounded-[1vw] bg-transparent hover:bg-white hover:text-black transition-all duration-200">
                   Logout
                 </button>
