@@ -39,8 +39,7 @@ const SmartInterestAI: React.FC = () => {
 
 
   return (
-    <main>
-      {/* className="relative min-h-screen bg-gradient-to-tr from-black to-[#1a0e2b] overflow-x-hidden" */}
+    <main className="relative min-h-screen bg-gradient-to-tr from-black to-[#1a0e2b] overflow-x-hidden">
     {/* Background image */}
       <img
         src="./public/abstract-bg.png"
