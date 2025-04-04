@@ -1,18 +1,6 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CheckCircle2 } from "lucide-react";
-
-const StatCard = ({ title, value }: { title: string; value: string }) => {
-  return (
-    <motion.div
-      whileHover={{ scale: 1.03 }}
-      className="bg-white/5 border border-white/10 rounded-xl shadow-sm p-5 text-center"
-    >
-      <h3 className="text-sm font-medium text-gray-300 mb-1">{title}</h3>
-      <p className="text-xl font-semibold text-white">{value}</p>
-    </motion.div>
-  );
-};
 
 const Prediction = () => {
   const [showAnimation, setShowAnimation] = useState(false);
@@ -23,6 +11,7 @@ const Prediction = () => {
     const timer1 = setTimeout(() => setShowAnimation(true), 500);
     const timer2 = setTimeout(() => setShowPrediction(true), 1800);
     const timer3 = setTimeout(() => setShowStats(true), 3300);
+    console.log(showStats)
     return () => {
       clearTimeout(timer1);
       clearTimeout(timer2);

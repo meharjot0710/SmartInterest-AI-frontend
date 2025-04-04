@@ -8,7 +8,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import NavbarIfAlreadyLogin from "../components/NavbarIfAlreadyLogin";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 interface User {
   name: string;
@@ -33,7 +33,7 @@ interface User {
   };
 }
 interface DashboardProps {
-  us: { uid: string; name: string; email: string };
+  us: { uid: any; email: any };
 }
 
 const Dashboard: React.FC<DashboardProps> = ({ us }) => {

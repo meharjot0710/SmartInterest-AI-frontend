@@ -3,18 +3,25 @@ import { useNavigate } from "react-router-dom";
 import NavbarIfAlreadyLogin from "../components/NavbarIfAlreadyLogin";
 
 interface DashboardProps {
-  us: { uid: string; name: string; email: string };
+  us: { uid: string; email: string | null };
 }
 
 interface User {
   name: string;
   profilePhoto: string;
 }
+
+interface Question {
+  question: string;
+  options: string[];
+}
+
 const Questionnaire: React.FC<DashboardProps> = ({ us }) => {
   const [user, setUser] = useState<User>({
     name: "us.name",
     profilePhoto: "https://i.pravatar.cc/150?img=64",
   });
+
   const subjects = [
     "Operating System",
     "DSA",
@@ -23,14 +30,17 @@ const Questionnaire: React.FC<DashboardProps> = ({ us }) => {
     "Machine Learning",
     "Data Analytics",
   ];
-  const [currentSubjectIndex, setCurrentSubjectIndex] = useState(0);
-  const [questions, setQuestions] = useState([]);
-  const [answers, setAnswers] = useState({});
-  const [scores, setScores] = useState({});
+
+  const [currentSubjectIndex, setCurrentSubjectIndex] = useState<number>(0);
+  const [questions, setQuestions] = useState<Question[]>([]);
+  const [answers, setAnswers] = useState<{ [key: number]: string }>({});
+  const [scores, setScores] = useState<{ [key: string]: number }>({});
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`https://smartinterest-ai-backend.onrender.com/get_user_data?uid=${us.uid}`)
+    fetch(
+      `https://smartinterest-ai-backend.onrender.com/get_user_data?uid=${us.uid}`
+    )
       .then((res) => res.json())
       .then((data) => {
         setUser(data);
@@ -56,21 +66,23 @@ const Questionnaire: React.FC<DashboardProps> = ({ us }) => {
     }
   };
 
-  const handleAnswerChange = (qIndex, answer) => {
+  const handleAnswerChange = (qIndex: number, answer: string) => {
     setAnswers((prev) => ({ ...prev, [qIndex]: answer }));
   };
 
   const handleSubmit = async () => {
     const subject = subjects[currentSubjectIndex];
 
-    // Ensure the answers are in correct order
     const orderedAnswers = questions.map((_, index) => answers[index] || null);
 
-    const res = await fetch("https://smartinterest-ai-backend.onrender.com/submit_answers", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ subject, answers: orderedAnswers }), // Ensures correct order
-    });
+    const res = await fetch(
+      "https://smartinterest-ai-backend.onrender.com/submit_answers",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ subject, answers: orderedAnswers }),
+      }
+    );
 
     const data = await res.json();
 
@@ -100,9 +112,9 @@ const Questionnaire: React.FC<DashboardProps> = ({ us }) => {
             {index + 1}. {q.question}
           </p>
           <div className="flex flex-col gap-3">
-            {q.options.map((opt, optindex) => (
+            {q.options.map((opt: string, optindex: number) => (
               <label
-                key={opt}
+                key={optindex}
                 className="flex items-center gap-3 cursor-pointer"
               >
                 <input
