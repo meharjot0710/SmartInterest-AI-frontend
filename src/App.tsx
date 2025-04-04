@@ -9,6 +9,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import FinalizingQuestionnaire from "./pages/Finalising-questionnaire.tsx";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import Profile from "./pages/Profile.tsx";
+import Prediction from "./pages/Prediction.tsx";
 
 const queryClient = new QueryClient();
 
@@ -70,6 +72,9 @@ const SmartInterestAI: React.FC = () => {
       </QueryClientProvider>
       {/* <NavbarIfAlreadyLogin/> */}
       {/* <Dashboard/> */}
+      {/* <Profile/> */}
+      {/* <Questionnaire/> */}
+      {/* <Prediction/> */}
     </main>
   );
 };
