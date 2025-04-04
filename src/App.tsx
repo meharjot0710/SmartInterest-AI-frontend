@@ -54,15 +54,15 @@ const SmartInterestAI: React.FC = () => {
             <Route path="/login" element={<SignUpLogIn />} />
             <Route path="/signup" element={<SignUpLogIn />} />
             <Route
-              path="/dashboard"
+              path="/SmartInterest-AI-frontend/dashboard"
               element={user ? <Dashboard us={user} /> : <Navigate to="/login" />}
             />
             <Route
-              path="/tests"
+              path="/SmartInterest-AI-frontend/tests"
               element={user ? <Questionnaire us={user} /> : <Navigate to="/login" />}
             />
             <Route
-              path="/predict"
+              path="/SmartInterest-AI-frontend/predict"
               element={
                 user ? <FinalizingQuestionnaire us={user} /> : <Navigate to="/login" />
               }
