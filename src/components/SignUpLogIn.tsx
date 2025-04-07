@@ -54,7 +54,7 @@ const SignUpLogIn: React.FC = () => {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       await storeUserInDB(userCredential.user);
       alert("Login Successful! Redirecting to dashboard...");
-      setTimeout(() => navigate("/SmartInterest-AI-frontend/#/dashboard"), 1500);
+      setTimeout(() => navigate("/dashboard"), 1500);
     } catch (error) {
       console.error("Email Login Error:", error);
       alert((error as Error).message); // TS-safe

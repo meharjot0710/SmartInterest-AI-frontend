@@ -92,7 +92,7 @@ const Questionnaire: React.FC<DashboardProps> = ({ us }) => {
     if (currentSubjectIndex < subjects.length - 1) {
       setCurrentSubjectIndex(currentSubjectIndex + 1);
     } else {
-      navigate("/SmartInterest-AI-frontend/#/predict", { state: { scores: updatedScores } });
+      navigate("/predict", { state: { scores: updatedScores } });
     }
   };
 
