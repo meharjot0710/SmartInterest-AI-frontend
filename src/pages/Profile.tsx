@@ -3,20 +3,36 @@ import { motion } from "framer-motion";
 
 const storedAvatar = localStorage.getItem("userProfileAvatar") || `https://api.dicebear.com/7.x/thumbs/svg?seed=avatar${Math.floor(Math.random() * 10000)}`;
 
-export default function Profile() {
-  const [avatarOptions, setAvatarOptions] = useState<string[]>([]);
+interface ProfileProps {
+  us: { uid: any; email: any };
+}
+
+interface User {
+  name: string;
+  email: string;
+  profilePhoto: string;
+}
+
+const Profile:React.FC<ProfileProps> = ({us}) => {
+  const [avatarOptions, setAvatarOptions] = useState("");
   const [selectedAvatar, setSelectedAvatar] = useState<string>(storedAvatar);
   const [name, setName] = useState("John Doe");
-  const [email] = useState("johndoe@example.com");
+  const [email,setEmail] = useState("johndoe@example.com");
   const [details, setDetails] = useState("");
   const [editing, setEditing] = useState(false);
 
   useEffect(() => {
-    const avatars = [storedAvatar, ...Array.from({ length: 4 }).map(
-      (_, index) => `https://api.dicebear.com/7.x/thumbs/svg?seed=avatar${index + 100}`
-    )];
-    setAvatarOptions(avatars);
-  }, []);
+      fetch(`https://smartinterest-ai-backend.onrender.com/get_user_data?uid=${us.uid}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setAvatarOptions([...avatarOptions, data.profilePhoto]);
+          setName(data.name);
+          setEmail(data.email);
+        })
+        .catch((err) => {
+          console.error("Error fetching user data:", err);
+        });
+    }, [us.uid]);
 
   const handleAvatarChange = (avatar: string) => {
     setSelectedAvatar(avatar);
@@ -54,7 +70,6 @@ export default function Profile() {
                 <div className="flex justify-center gap-3 sm:gap-4 flex-wrap">
                   {avatarOptions.slice(1).map((avatar) => (
                     <img
-                      key={avatar}
                       src={avatar}
                       alt="avatar option"
                       onClick={() => handleAvatarChange(avatar)}
@@ -143,3 +158,4 @@ export default function Profile() {
     </motion.div>
   );
 }
+export default Profile;

@@ -58,12 +58,14 @@ const NavbarIfAlreadyLogin: React.FC<NavbarProp> = ({name,profilePhoto}) => {
           </span>{" "}
           {/*Name of The User */}
           <div className="h-10 w-10 rounded-full overflow-hidden border-2 border-white shrink-0">
+            <a href="/SmartInterest-AI-frontend/#/profile">
             <img
               src={profilePhoto}
               alt="User Avatar"
               className="w-full h-full object-cover"
               loading="lazy"
             />{" "}
+            </a>
             {/*change "Vishal" to Name of The User */}
           </div>
           <a href="/SmartInterest-AI-frontend/#/dashboard" className="hidden sm:flex">

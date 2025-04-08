@@ -83,6 +83,7 @@ const FinalizingQuestionnaire: React.FC<PredictionProp> = ({ us }) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log("Form Data:", formData); // Log the form data
     const transformedData = {
       user_id: us.uid,
       ...formData,
@@ -94,8 +95,11 @@ const FinalizingQuestionnaire: React.FC<PredictionProp> = ({ us }) => {
 
     try {
       const response = await axios.post("https://smartinterest-ai-backend.onrender.com/predict", transformedData);
-      setPrediction(response.data);
-      console.log(response.data);
+      setPrediction(response.data.predicted_interest);
+      console.log("Prediction Response:", response.data.predicted_interest);
+      const response_roadmap = await axios.get("http://127.0.0.1:5000/roadmaps");
+      console.log("Roadmap Response:", response_roadmap);
+      setPrediction({predicted_interest:response.data.predicted_interest,roadmap:response_roadmap.data[response.data.predicted_interest]});
 
       await fetch("https://smartinterest-ai-backend.onrender.com/update_user_data", {
         method: "POST",
@@ -105,7 +109,7 @@ const FinalizingQuestionnaire: React.FC<PredictionProp> = ({ us }) => {
           email: us.email,
           predicted_interest: response.data.predicted_interest,
           formdata: formData,
-          roadmap: response.data.roadmap,
+          roadmap: response_roadmap.data[response.data.predicted_interest],
         }),
       });
     } catch (error) {
@@ -188,9 +192,9 @@ const FinalizingQuestionnaire: React.FC<PredictionProp> = ({ us }) => {
                   <button
                     key={level}
                     name={levelKey}
-                    onClick={()=>handleLevelChange(index+1, level)}
+                    onClick={()=>handleLevelChange(index, level)}
                     className={`px-4 py-1.5 rounded-full border text-sm font-medium transition ${
-                      formData[`Level${index+1}` as keyof typeof formData] === level
+                      formData[`Level${index}` as keyof typeof formData] === level
                         ? "bg-pink-400 border-fuchsia-400 text-white"
                         : "bg-transparent border-white text-white hover:bg-white hover:text-black"
                     }`}
@@ -218,7 +222,7 @@ const FinalizingQuestionnaire: React.FC<PredictionProp> = ({ us }) => {
         <div className="mt-6 p-4 bg-gray-100 rounded shadow">
           <h3 className="text-lg font-bold mb-2">Prediction Result</h3>
           <p><strong>Predicted Interest:</strong> {prediction.predicted_interest}</p>
-          <p><strong>Roadmap:</strong> {prediction.roadmap}</p>
+          {/* <p><strong>Roadmap:</strong> {prediction.roadmap}</p>  */}
         </div>
       )}
     </div>

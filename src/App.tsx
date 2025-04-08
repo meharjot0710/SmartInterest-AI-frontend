@@ -10,6 +10,7 @@ import FinalizingQuestionnaire from "./pages/Finalising-questionnaire.tsx";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { HashRouter } from 'react-router-dom';
+import Profile from "./pages/Profile.tsx";
 // import Profile from "./pages/Profile.tsx";
 // import Prediction from "./pages/Prediction.tsx";
 
@@ -56,6 +57,7 @@ const SmartInterestAI: React.FC = () => {
             <Route path="/dashboard" element={user ? <Dashboard us={user} /> : <Navigate to="/login" />} />
             <Route path="/tests" element={user ? <Questionnaire us={user} /> : <Navigate to="/login" />} />
             <Route path="/predict" element={user ? <FinalizingQuestionnaire us={user} /> : <Navigate to="/login" />} />
+            <Route path="/profile" element={user ? <Profile us={user} /> : <Navigate to="/login" />} />
           </Routes>
         </HashRouter>
       </QueryClientProvider>
