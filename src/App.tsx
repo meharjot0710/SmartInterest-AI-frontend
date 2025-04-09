@@ -52,8 +52,8 @@ const SmartInterestAI: React.FC = () => {
         <HashRouter>
           <Routes>
             <Route path="/" element={<Landing />} />
-            <Route path="/login" element={<SignUpLogIn />} />
-            <Route path="/signup" element={<SignUpLogIn />} />
+            <Route path="/login" element={<SignUpLogIn bool={{ bool: false }}/>} />
+            <Route path="/signup" element={<SignUpLogIn bool={{ bool: true }}/>} />
             <Route path="/dashboard" element={user ? <Dashboard us={user} /> : <Navigate to="/login" />} />
             <Route path="/tests" element={user ? <Questionnaire us={user} /> : <Navigate to="/login" />} />
             <Route path="/predict" element={user ? <FinalizingQuestionnaire us={user} /> : <Navigate to="/login" />} />

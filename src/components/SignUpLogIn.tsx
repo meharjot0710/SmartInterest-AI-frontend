@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   signInWithPopup,
@@ -35,13 +35,18 @@ const InputField = ({
   </label>
 );
 
-const SignUpLogIn: React.FC = () => {
+interface Page {
+  bool: {
+    bool: boolean;
+  };
+}
+
+const SignUpLogIn: React.FC<Page> = (bool) => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const navigate = useNavigate();
-
   const loginWithEmail = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -85,6 +90,10 @@ const SignUpLogIn: React.FC = () => {
       alert((error as Error).message);
     }
   };
+
+  useEffect(() => {
+    setIsSignUp(bool.bool.bool);
+    }, []);
 
   const register = async () => {
     if (!fullName || !email || !password) {
