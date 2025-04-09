@@ -97,16 +97,16 @@ const Questionnaire: React.FC<DashboardProps> = ({ us }) => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-transparent rounded-[25px] min-h-screen">
+    <div className="max-w-3xl mx-auto mt-20 p-6 bg-transparent rounded-[25px] min-h-screen">
       <NavbarIfAlreadyLogin name={user.name} profilePhoto={user.profilePhoto} />
-      <h1 className="text-4xl text-white font-bold text-center mb-10">
+      <h1 className="text-4xl text-white font-bold text-center mb-5">
         {subjects[currentSubjectIndex]} Test
       </h1>
 
       {questions.map((q, index) => (
         <div
           key={index}
-          className="bg-white rounded-lg shadow-md p-6 mb-6 transition-transform duration-200 hover:scale-[1.01] hover:drop-shadow-[0_0_20px_rgba(0,0,0,1)]"
+          className="max-w-3xl mx-auto mt-10 mb-10 p-6 hover:-translate-y-1 transition-all duration-300  bg-[rgba(0,0,0,0.5)] rounded-xl backdrop-blur-md border border-white/20 text-white"
         >
           <p className="text-lg font-semibold mb-4">
             {index + 1}. {q.question}
@@ -125,18 +125,18 @@ const Questionnaire: React.FC<DashboardProps> = ({ us }) => {
                   onChange={() => handleAnswerChange(index, opt)}
                   className="w-4 h-4 accent-blue-600"
                 />
-                <span className="text-gray-800">{opt}</span>
+                <span className="text-white">{opt}</span>
               </label>
             ))}
           </div>
         </div>
       ))}
 
-      <div className="bg-white p-4 flex justify-between items-center rounded-xl shadow-md">
+      <div className="bg-white/5 backdrop-blur-xl hover:border hover:border-l-white hover:border-r-white p-4 flex justify-between items-center rounded-xl shadow-md transition-all duration-300 ">
         {currentSubjectIndex > 0 && (
           <button
             onClick={() => setCurrentSubjectIndex(currentSubjectIndex - 1)}
-            className="px-4 py-2 bg-gray-100 text-gray-800 rounded-lg hover:bg-gray-200 transition-colors"
+            className="whitespace-nowrap mr-3 px-3 py-1.5 text-base font-medium bg-white text-black border-b border-black rounded-[1vw] hover:bg-black hover:text-white transition-all duration-300 cursor-pointer"
           >
             ← Previous
           </button>
@@ -144,14 +144,14 @@ const Questionnaire: React.FC<DashboardProps> = ({ us }) => {
         {currentSubjectIndex < subjects.length - 1 ? (
           <button
             onClick={handleSubmit}
-            className="ml-auto px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all"
+            className="whitespace-nowrap mr-3 px-3 py-1.5 text-base font-medium bg-white text-black border-b border-black rounded-[1vw] hover:bg-black hover:text-white transition-all duration-300 cursor-pointer"
           >
             Next →
           </button>
         ) : (
           <button
             onClick={handleSubmit}
-            className="ml-auto px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-all"
+            className="whitespace-nowrap mr-3 px-3 py-1.5 text-base font-medium bg-green-400 text-black border-b border-black rounded-[1vw] hover:bg-black hover:text-white transition-all duration-300 cursor-pointer"
           >
             ✅ Finish Test
           </button>

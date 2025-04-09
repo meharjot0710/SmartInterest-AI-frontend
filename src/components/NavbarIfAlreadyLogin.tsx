@@ -27,7 +27,7 @@ const NavbarIfAlreadyLogin: React.FC<NavbarProp> = ({name,profilePhoto}) => {
   return (
     <div>
       {/* Nav Header */}
-      <header className="fixed top-0 left-0 right-0 z-40 flex justify-between items-center px-6 py-1 bg-gradient-to-r from-purple-900 via-black to-black backdrop-blur-md border border-y-black/40 shadow-md max-sm:flex-col max-sm:gap-5">
+      <header className="fixed top-0 left-0 right-0 z-40 flex justify-between items-center px-6 py-1 bg-transparent backdrop-blur-md border border-y-black/40 shadow-md max-sm:flex-col max-sm:gap-5">
         <div className="flex items-center justify-between w-full max-sm:flex-row">
           <a href="/SmartInterest-AI-frontend/#/dashboard">
             <div className="flex h-10 m-2 items-center gap-2 bg-black bg-opacity-50 border border-fuchsia-300 rounded-full px-3 py-1 backdrop-blur-md">

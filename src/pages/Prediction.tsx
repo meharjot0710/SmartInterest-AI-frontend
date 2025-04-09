@@ -52,13 +52,21 @@ const Prediction = () => {
       <AnimatePresence>
         {showPrediction && (
           <motion.h1
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 1, ease: "easeOut" }}
-            className="text-2xl md:text-4xl font-semibold mb-8 text-center"
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 1, ease: "easeOut" }}
+          className="text-2xl md:text-4xl font-semibold mb-8 text-center"
+        >
+          Your Ideal Career Path:{" "}
+          <motion.span
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1.5 }}
+            transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
+            className="text-indigo-600 font-mono"
           >
-            Your Ideal Career Path: <span className="text-indigo-400">Web Development</span>
-          </motion.h1>
+            &lt;/Web Development&gt;
+          </motion.span>
+        </motion.h1>
         )}
       </AnimatePresence>
 

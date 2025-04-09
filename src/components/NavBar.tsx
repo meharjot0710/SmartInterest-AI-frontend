@@ -54,6 +54,7 @@ const NavBar: React.FC = () => {
           </a>
           <a href="/SmartInterest-AI-frontend/#/signup">
           <button className="whitespace-nowrap px-3 py-1.5 text-base border-b border-pink-400 font-medium text-white rounded-[1vw] hover:bg-pink-400 transition-all duration-200">
+
             Sign Up
           </button>
           </a>
