@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 const storedAvatar = localStorage.getItem("userProfileAvatar") || `https://api.dicebear.com/7.x/thumbs/svg?seed=avatar${Math.floor(Math.random() * 10000)}`;
 
@@ -7,14 +8,8 @@ interface ProfileProps {
   us: { uid: any; email: any };
 }
 
-interface User {
-  name: string;
-  email: string;
-  profilePhoto: string;
-}
-
 const Profile:React.FC<ProfileProps> = ({us}) => {
-  const [avatarOptions, setAvatarOptions] = useState("");
+  const [avatarOptions, setAvatarOptions] = useState<string[]>([]);
   const [selectedAvatar, setSelectedAvatar] = useState<string>(storedAvatar);
   const [name, setName] = useState("John Doe");
   const [email,setEmail] = useState("johndoe@example.com");
@@ -25,7 +20,8 @@ const Profile:React.FC<ProfileProps> = ({us}) => {
       fetch(`https://smartinterest-ai-backend.onrender.com/get_user_data?uid=${us.uid}`)
         .then((res) => res.json())
         .then((data) => {
-          setAvatarOptions([...avatarOptions, data.profilePhoto]);
+          setAvatarOptions([...avatarOptions, String(data.profilePhoto)]);
+          setSelectedAvatar(data.profilePhoto);
           setName(data.name);
           setEmail(data.email);
         })
@@ -140,11 +136,13 @@ const Profile:React.FC<ProfileProps> = ({us}) => {
           </div>
 
           <div className="flex flex-col sm:flex-row justify-end gap-4">
+          <Link to="/">
             <button
               className="px-6 py-2 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl hover:from-red-600 hover:to-red-700 transition w-full sm:w-auto"
             >
               Log-Out
             </button>
+            </Link>
             {editing && (
               <button
                 className="px-6 py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl hover:from-blue-700 hover:to-blue-800 transition w-full sm:w-auto"
