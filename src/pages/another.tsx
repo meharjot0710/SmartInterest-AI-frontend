@@ -58,13 +58,7 @@ const FinalizingQuestionnaire: React.FC<PredictionProp> = ({ us }) => {
   });
 
   const [prediction, setPrediction] = useState<PredictionType | null>(null);
-  const domains=["AI",
-  "Web Development",
-  "Machine Learning",
-  "Cybersecurity",
-  "Data Science",
-  "Robotics",
-  "Game Development"];
+  const [domains, setDomains] = useState<string[]>([]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -83,7 +77,6 @@ const FinalizingQuestionnaire: React.FC<PredictionProp> = ({ us }) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form Data:", formData); // Log the form data
     const transformedData = {
       user_id: us.uid,
       ...formData,
@@ -95,11 +88,8 @@ const FinalizingQuestionnaire: React.FC<PredictionProp> = ({ us }) => {
 
     try {
       const response = await axios.post("https://smartinterest-ai-backend.onrender.com/predict", transformedData);
-      setPrediction(response.data.predicted_interest);
-      console.log("Prediction Response:", response.data.predicted_interest);
-      const response_roadmap = await axios.get("http://127.0.0.1:5000/roadmaps");
-      console.log("Roadmap Response:", response_roadmap);
-      setPrediction({predicted_interest:response.data.predicted_interest,roadmap:response_roadmap.data[response.data.predicted_interest]});
+      setPrediction(response.data);
+      console.log(response.data);
 
       await fetch("https://smartinterest-ai-backend.onrender.com/update_user_data", {
         method: "POST",
@@ -109,7 +99,7 @@ const FinalizingQuestionnaire: React.FC<PredictionProp> = ({ us }) => {
           email: us.email,
           predicted_interest: response.data.predicted_interest,
           formdata: formData,
-          roadmap: response_roadmap.data[response.data.predicted_interest],
+          roadmap: response.data.roadmap,
         }),
       });
     } catch (error) {
@@ -128,6 +118,13 @@ const FinalizingQuestionnaire: React.FC<PredictionProp> = ({ us }) => {
       .catch((err) => {
         console.error("Error fetching user data:", err);
       });
+    axios.get("https://smartinterest-ai-backend.onrender.com/roadmap-domains")
+      .then((response) => {
+        setDomains(Object.keys(response.data));
+      })
+      .catch((err) => {
+        console.error("Error fetching domains:", err);
+      });
   }, []);
 
   const subjectKeys = [
@@ -140,93 +137,77 @@ const FinalizingQuestionnaire: React.FC<PredictionProp> = ({ us }) => {
   ];
 
   return (
-    <>
-      <NavbarIfAlreadyLogin name={user.name} profilePhoto={user.profilePhoto} />
-    <div className="max-w-3xl mx-auto mt-20 mb-10 p-6 min-h-screen bg-[rgba(0,0,0,0.5)] rounded-xl backdrop-blur-md border border-white/20 text-white">
-      <h1 className="text-3xl font-bold text-center mb-8">🎯 Finalize Your Questionnaire</h1>
+    <div className="p-6">
+      <NavbarIfAlreadyLogin  name={user.name} profilePhoto={user.profilePhoto} />
+      <h2 className="text-2xl font-bold mb-4">Finalising Your Questionnaire</h2>
 
-      {/* Marks Section */}
-      <div className="bg-[rgba(255,255,255,0.1)] rounded-lg p-4 mb-6 shadow-md border border-white/10">
-        <h2 className="text-xl font-semibold mb-4">📋 Your Marks</h2>
-        <ul className="space-y-1 mb-3">
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Subject Scores */}
+        <div>
+          <h3 className="text-lg font-semibold">Your Scores:</h3>
           {subjectKeys.map((subject) => (
-            <li key={subject} className="text-sm">
+            <div key={subject} className="flex gap-2 items-center">
               <span className="font-medium">{subject.toUpperCase()}:</span> {formData[subject as keyof typeof formData] * 10}/100
-            </li>
+            </div>
           ))}
-        </ul>
-      </div>
+        </div>
 
-      {/* Topics + Modern Difficulty Meter */}
-      <div className="bg-[rgba(255,255,255,0.1)] rounded-lg p-4 mb-6 shadow-md border border-white/10">
-        <h2 className="text-xl font-semibold mb-4">🧠 Select Your Project Topics & Difficulty</h2>
-        <div className="space-y-6">
+        {/* Projects */}
+        <div>
+          <h3 className="text-lg font-semibold">Your Projects:</h3>
           {[1, 2, 3, 4].map((index) => {
             const projectKey = `Project ${index}`;
             const levelKey = `Level${index}`;
             return (
-            <div key={index} className="space-y-3">
-              {/* Topic Dropdown */}
-              <div className="relative">
+              <div key={index} className="mb-4">
+                <label className="block mb-1 font-medium">{projectKey}</label>
                 <select
                   name={projectKey}
                   value={formData[projectKey as keyof typeof formData]}
                   onChange={handleChange}
-                  className="w-full p-2 pr-10 bg-black bg-opacity-30 border border-white/20 rounded-md text-white appearance-none"
+                  className="border rounded p-2 w-full"
                 >
-                  <option value="">Project's Topic {index}</option>
-                  {domains.map((domain, idx) => (
-                    <option key={idx} value={domain}>
-                      {domain}  
+                  <option value="">Select Domain</option>
+                  {domains.map((domain) => (
+                    <option key={domain} value={domain}>
+                      {domain}
                     </option>
                   ))}
                 </select>
-                <div className="pointer-events-none absolute top-1/2 right-3 transform -translate-y-1/2 text-white">
-                  ▼
+
+                <label className="block mt-2 mb-1 font-medium">Level</label>
+                <div className="flex gap-4">
+                  {difficultyLevels.map((level) => (
+                    <label key={level} className="flex items-center gap-1">
+                      <input
+                        type="radio"
+                        name={levelKey}
+                        value={level}
+                        checked={formData[levelKey as keyof typeof formData] === level}
+                        onChange={() => handleLevelChange(index, level)}
+                      />
+                      {level}
+                    </label>
+                  ))}
                 </div>
               </div>
-
-              {/* Difficulty Meter */}
-              <div className="flex justify-center sm:justify-start gap-2">
-                {difficultyLevels.map((level) => (
-                  <button
-                    key={level}
-                    name={levelKey}
-                    onClick={()=>handleLevelChange(index, level)}
-                    className={`px-4 py-1.5 rounded-full border text-sm font-medium transition ${
-                      formData[`Level${index}` as keyof typeof formData] === level
-                        ? "bg-pink-400 border-fuchsia-400 text-white"
-                        : "bg-transparent border-white text-white hover:bg-white hover:text-black"
-                    }`}
-                  >
-                    {level}
-                  </button>
-                ))}
-              </div>
-            </div>
-            );})}
-    
+            );
+          })}
         </div>
-      </div>
 
-      {/* Submit Button */}
-      <div className="text-center mt-6">
-        <button
-          onClick={handleSubmit}
-          className="px-6 py-2 text-lg font-semibold bg-pink-500 hover:bg-fuchsia-700 rounded-lg transition"
-        >
-          🚀 Submit
+        <button type="submit" className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+          Submit
         </button>
-      </div>
+      </form>
+
       {prediction && (
         <div className="mt-6 p-4 bg-gray-100 rounded shadow">
           <h3 className="text-lg font-bold mb-2">Prediction Result</h3>
           <p><strong>Predicted Interest:</strong> {prediction.predicted_interest}</p>
-          {/* <p><strong>Roadmap:</strong> {prediction.roadmap}</p>  */}
+          <p><strong>Roadmap:</strong> {prediction.roadmap}</p>
         </div>
       )}
     </div>
-    </>
   );
 };
 
