@@ -44,7 +44,7 @@ const SmartInterestAI: React.FC = () => {
       <img
         src="./public/abstract-bg.png"
         alt="Abstract background"
-        className="absolute inset-0 w-full h-full object-cover -z-10 pointer-events-none fixed"
+        className=" inset-0 w-full h-full object-cover -z-10 pointer-events-none fixed"
       />
 
       <QueryClientProvider client={queryClient}>
