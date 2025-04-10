@@ -97,7 +97,7 @@ const FinalizingQuestionnaire: React.FC<PredictionProp> = ({ us }) => {
       const response = await axios.post("https://smartinterest-ai-backend.onrender.com/predict", transformedData);
       setPrediction(response.data.predicted_interest);
       console.log("Prediction Response:", response.data.predicted_interest);
-      const response_roadmap = await axios.get("http://127.0.0.1:5000/roadmaps");
+      const response_roadmap = await axios.get("https://smartinterest-ai-backend.onrender.com/roadmaps");
       console.log("Roadmap Response:", response_roadmap);
       setPrediction({predicted_interest:response.data.predicted_interest,roadmap:response_roadmap.data[response.data.predicted_interest]});
 
