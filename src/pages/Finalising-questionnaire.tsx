@@ -84,6 +84,8 @@ const FinalizingQuestionnaire: React.FC<PredictionProp> = ({ us }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Form Data:", formData); // Log the form data
+    
+    let level_mapping = {'Beginner': 1, 'Intermediate': 2, 'Advanced': 3}
     const transformedData = {
       user_id: us.uid,
       ...formData,
@@ -91,6 +93,10 @@ const FinalizingQuestionnaire: React.FC<PredictionProp> = ({ us }) => {
       "Project 2": domainMapping[formData["Project 2"] as keyof typeof domainMapping] || 0,
       "Project 3": domainMapping[formData["Project 3"] as keyof typeof domainMapping] || 0,
       "Project 4": domainMapping[formData["Project 4"] as keyof typeof domainMapping] || 0,
+      "Level1": level_mapping[formData["Level1"] as keyof typeof level_mapping] || 0,
+      "Level2": level_mapping[formData["Level1"] as keyof typeof level_mapping] || 0,
+      "Level3": level_mapping[formData["Level1"] as keyof typeof level_mapping] || 0,
+      "Level4": level_mapping[formData["Level1"] as keyof typeof level_mapping] || 0,
     };
 
     try {
