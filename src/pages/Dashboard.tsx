@@ -125,7 +125,7 @@ const Dashboard: React.FC<DashboardProps> = ({ us }) => {
       </div>
 
       {/* Subject-wise scores with Line Charts */}
-      <div className="bg-[rgba(0,0,0,0.1)] border border-[rgba(255,255,255,0.2)] hover:border-[rgba(255,255,255,0.1)] text-white rounded-xl p-6 shadow-md mb-6">
+      <div className="bg-[rgba(0,0,0,0.1)] border border-[rgba(255,255,255,0.2)] hover:border-[rgba(255,255,255,0.5)] text-white rounded-xl p-6 shadow-md mb-6">
         <h3 className="text-xl font-semibold mb-4">Previous Performances</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {Object.entries(user.scores || {}).map(([subject, scores]) => {
