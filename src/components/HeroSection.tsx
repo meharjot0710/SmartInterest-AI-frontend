@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import image from "../assets/dash.png"
 
 const HeroSection: React.FC = () => {
   useEffect(() => {
@@ -44,7 +45,7 @@ const HeroSection: React.FC = () => {
 
         {/* Center Image */}
         <img
-          src="https://cdn.builder.io/api/v1/image/assets/TEMP/12e6850846379bbe1be94582eb56c7d1e98748a2"
+          src={image}
           alt=""
           className="absolute h-[317px] w-[317px] opacity-80 rounded-3xl z-0 max-sm:h-[200px] max-sm:w-[200px]"
           data-aos="zoom-out"
