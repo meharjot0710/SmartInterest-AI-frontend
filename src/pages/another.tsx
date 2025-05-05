@@ -87,11 +87,11 @@ const FinalizingQuestionnaire: React.FC<PredictionProp> = ({ us }) => {
     };
 
     try {
-      const response = await axios.post("https://smartinterest-ai-backend.onrender.com/predict", transformedData);
+      const response = await axios.post("http://127.0.0.1:5000/predict", transformedData);
       setPrediction(response.data);
       console.log(response.data);
 
-      await fetch("https://smartinterest-ai-backend.onrender.com/update_user_data", {
+      await fetch("http://127.0.0.1:5000/update_user_data", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -109,7 +109,7 @@ const FinalizingQuestionnaire: React.FC<PredictionProp> = ({ us }) => {
 
   useEffect(() => {
     fetch(
-      `https://smartinterest-ai-backend.onrender.com/get_user_data?uid=${us.uid}`
+      `http://127.0.0.1:5000/get_user_data?uid=${us.uid}`
     )
       .then((res) => res.json())
       .then((data) => {
@@ -118,7 +118,7 @@ const FinalizingQuestionnaire: React.FC<PredictionProp> = ({ us }) => {
       .catch((err) => {
         console.error("Error fetching user data:", err);
       });
-    axios.get("https://smartinterest-ai-backend.onrender.com/roadmap-domains")
+    axios.get("http://127.0.0.1:5000/roadmap-domains")
       .then((response) => {
         setDomains(Object.keys(response.data));
       })
@@ -142,7 +142,6 @@ const FinalizingQuestionnaire: React.FC<PredictionProp> = ({ us }) => {
       <h2 className="text-2xl font-bold mb-4">Finalising Your Questionnaire</h2>
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Subject Scores */}
         <div>
           <h3 className="text-lg font-semibold">Your Scores:</h3>
           {subjectKeys.map((subject) => (
@@ -152,7 +151,6 @@ const FinalizingQuestionnaire: React.FC<PredictionProp> = ({ us }) => {
           ))}
         </div>
 
-        {/* Projects */}
         <div>
           <h3 className="text-lg font-semibold">Your Projects:</h3>
           {[1, 2, 3, 4].map((index) => {

@@ -100,14 +100,14 @@ const FinalizingQuestionnaire: React.FC<PredictionProp> = ({ us }) => {
     };
 
     try {
-      const response = await axios.post("https://smartinterest-ai-backend.onrender.com/predict", transformedData);
+      const response = await axios.post("http://127.0.0.1:5000/predict", transformedData);
       setPrediction(response.data.predicted_interest);
       console.log("Prediction Response:", response.data.predicted_interest);
-      const response_roadmap = await axios.get("https://smartinterest-ai-backend.onrender.com/roadmaps");
+      const response_roadmap = await axios.get("http://127.0.0.1:5000/roadmaps");
       console.log("Roadmap Response:", response_roadmap);
       setPrediction({predicted_interest:response.data.predicted_interest,roadmap:response_roadmap.data[response.data.predicted_interest]});
 
-      await fetch("https://smartinterest-ai-backend.onrender.com/update_user_data", {
+      await fetch("http://127.0.0.1:5000/update_user_data", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -125,7 +125,7 @@ const FinalizingQuestionnaire: React.FC<PredictionProp> = ({ us }) => {
 
   useEffect(() => {
     fetch(
-      `https://smartinterest-ai-backend.onrender.com/get_user_data?uid=${us.uid}`
+      `http://127.0.0.1:5000/get_user_data?uid=${us.uid}`
     )
       .then((res) => res.json())
       .then((data) => {

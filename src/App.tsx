@@ -11,8 +11,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { HashRouter } from 'react-router-dom';
 import Profile from "./pages/Profile.tsx";
-// import Profile from "./pages/Profile.tsx";
-// import Prediction from "./pages/Prediction.tsx";
+import Prediction from "./pages/Prediction.tsx";
 
 const queryClient = new QueryClient();
 
@@ -21,14 +20,14 @@ const SmartInterestAI: React.FC = () => {
     uid: string;
     email: string | null;
   } | null>(null);
-  const [loading, setLoading] = useState(true); // Add loading state
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
       setUser(
         currentUser ? { uid: currentUser.uid, email: currentUser.email } : null
       );
-      setLoading(false); // Set loading to false once Firebase has initialized
+      setLoading(false);
     });
 
     return () => unsubscribe();
@@ -41,7 +40,6 @@ const SmartInterestAI: React.FC = () => {
 
   return (
     <main className="relative min-h-screen bg-gradient-to-tr from-black to-[#1a0e2b] overflow-x-hidden">
-    {/* Background image */}
     <img
         src="/SmartInterest-AI-frontend/abstract-bg.png"
         alt="Abstract background"
@@ -52,6 +50,7 @@ const SmartInterestAI: React.FC = () => {
         <HashRouter>
           <Routes>
             <Route path="/" element={<Landing />} />
+            <Route path="/prediction" element={<Prediction />} />
             <Route path="/login" element={<SignUpLogIn bool={{ bool: false }}/>} />
             <Route path="/signup" element={<SignUpLogIn bool={{ bool: true }}/>} />
             <Route path="/dashboard" element={user ? <Dashboard us={user} /> : <Navigate to="/login" />} />
@@ -61,11 +60,6 @@ const SmartInterestAI: React.FC = () => {
           </Routes>
         </HashRouter>
       </QueryClientProvider>
-      {/* <NavbarIfAlreadyLogin/> */}
-      {/* <Dashboard/> */}
-      {/* <Profile/> */}
-      {/* <Questionnaire/> */}
-      {/* <Prediction/> */}
     </main>
   );
 };
