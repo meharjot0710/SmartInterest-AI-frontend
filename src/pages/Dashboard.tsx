@@ -62,7 +62,7 @@ const Dashboard: React.FC<DashboardProps> = ({ us }) => {
   });
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:5000/get_user_data?uid=${us.uid}`)
+    fetch(`https://smartinterest-ai-backend-production.up.railway.app/get_user_data?uid=${us.uid}`)
       .then((res) => res.json())
       .then((data) => {
         console.log(data);

@@ -17,7 +17,7 @@ const Profile:React.FC<ProfileProps> = ({us}) => {
   const [editing, setEditing] = useState(false);
 
   useEffect(() => {
-      fetch(`http://127.0.0.1:5000/get_user_data?uid=${us.uid}`)
+      fetch(`https://smartinterest-ai-backend-production.up.railway.app/get_user_data?uid=${us.uid}`)
         .then((res) => res.json())
         .then((data) => {
           setAvatarOptions([...avatarOptions, String(data.profilePhoto)]);
