@@ -68,7 +68,7 @@ const SignUpLogIn: React.FC<Page> = (bool) => {
 
   const storeUserInDB = async (user: { uid: string; email: string | null; displayName?: string | null
    }) => {
-    await fetch("https://smartinterest-ai-backend-production.up.railway.app/store_user", {
+    await fetch("http://127.0.0.1:5000/store_user", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

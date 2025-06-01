@@ -87,11 +87,11 @@ const FinalizingQuestionnaire: React.FC<PredictionProp> = ({ us }) => {
     };
 
     try {
-      const response = await axios.post("https://smartinterest-ai-backend-production.up.railway.app/predict", transformedData);
+      const response = await axios.post("http://127.0.0.1:5000/predict", transformedData);
       setPrediction(response.data);
       console.log(response.data);
 
-      await fetch("https://smartinterest-ai-backend-production.up.railway.app/update_user_data", {
+      await fetch("http://127.0.0.1:5000/update_user_data", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -109,7 +109,7 @@ const FinalizingQuestionnaire: React.FC<PredictionProp> = ({ us }) => {
 
   useEffect(() => {
     fetch(
-      `https://smartinterest-ai-backend-production.up.railway.app/get_user_data?uid=${us.uid}`
+      `http://127.0.0.1:5000/get_user_data?uid=${us.uid}`
     )
       .then((res) => res.json())
       .then((data) => {
@@ -118,7 +118,7 @@ const FinalizingQuestionnaire: React.FC<PredictionProp> = ({ us }) => {
       .catch((err) => {
         console.error("Error fetching user data:", err);
       });
-    axios.get("https://smartinterest-ai-backend-production.up.railway.app/roadmap-domains")
+    axios.get("http://127.0.0.1:5000/roadmap-domains")
       .then((response) => {
         setDomains(Object.keys(response.data));
       })
